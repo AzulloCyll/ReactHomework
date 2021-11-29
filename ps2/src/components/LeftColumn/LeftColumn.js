@@ -23,6 +23,21 @@ class LeftColumn extends React.Component {
   //   return false;
   // }
 
+  componentDidMount() {
+    console.log("iyrir");
+  }
+
+  componentDidUpdate() {
+    const { interval } = this.props;
+    if (interval % 2 === 0) {
+      console.log("even");
+    } else console.log("odd");
+  }
+
+  componentWillUnmount() {
+    console.log("bye");
+  }
+
   render() {
     const { interval, text } = this.props;
     const { initialTimerValue } = this.state;
@@ -30,7 +45,13 @@ class LeftColumn extends React.Component {
     return (
       <div className={commonColumnsStyles.App}>
         <header className={commonColumnsStyles.AppHeader}>
-          <img src={logo} className={commonColumnsStyles.AppLogo} alt="logo" />
+          {interval % 2 !== 0 && (
+            <img
+              src={logo}
+              className={commonColumnsStyles.AppLogo}
+              alt="logo"
+            />
+          )}
           <p>{`${text} count from ${initialTimerValue} only even numbers`}</p>
           <p>
             {initialTimerValue + (interval % 2 === 0 ? interval : interval - 1)}

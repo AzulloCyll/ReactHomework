@@ -17,8 +17,12 @@ function App() {
     <div className={styles.appWrapper}>
       <Header interval={intervalValue} />
       <div className={styles.columnsWrapper}>
-        {intervalValue < 3 && <LeftColumn interval={intervalValue} />}
-        <RightColumn interval={intervalValue} text={rightColumnText} />
+        {intervalValue < 10 && (
+          <LeftColumn interval={intervalValue} text={leftColumnText} />
+        )}
+        {intervalValue < 20 && (
+          <RightColumn interval={intervalValue} text={rightColumnText} />
+        )}
       </div>
     </div>
   );
