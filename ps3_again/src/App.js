@@ -1,7 +1,7 @@
-import LeftColumn from './components/LeftColumn/LeftColumn';
-import RightColumn from './components/RightColumn/RightColumn';
-import Header from './components/Header/Header';
-import styles from './App.module.scss';
+import LeftColumn from "./components/LeftColumn/LeftColumn";
+import RightColumn from "./components/RightColumn/RightColumn";
+import Header from "./components/Header/Header";
+import styles from "./App.module.scss";
 
 function App() {
   return (
@@ -11,7 +11,7 @@ function App() {
         <LeftColumn />
         <RightColumn />
       </div>
-    </ div>
+    </div>
   );
 }
 
