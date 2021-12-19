@@ -8,7 +8,22 @@ class LeftColumn extends React.Component {
     super(props);
     this.state = {
       counter: 0,
+      name: "",
+      zodiac: "",
+      messageText: "",
     };
+  }
+
+  componentDidMount() {
+    console.log("mounted");
+  }
+
+  componentWillUnmount() {
+    console.log("unmonted");
+  }
+
+  componentDidUpdate() {
+    console.log("updated");
   }
 
   handleIncreaseCounter = () => {
@@ -24,6 +39,25 @@ class LeftColumn extends React.Component {
     });
   };
 
+  handleNameChange = (e) => {
+    this.setState({
+      name: e.target.value,
+    });
+  };
+
+  handleZodiacChange = (e) => {
+    this.setState({
+      zodiac: e.target.value,
+    });
+  };
+
+  handleSubmit = (e) => {
+    e.preventDefault();
+    this.setState({
+      messageText: `Cześć ${this.state.name}, twój znak zodiaku to ${this.state.zodiac}`,
+    });
+  };
+
   render() {
     return (
       <div className={commonColumnsStyles.App}>
@@ -35,6 +69,29 @@ class LeftColumn extends React.Component {
             Increase by 1
           </button>
           <p>Counter: {this.state.counter}</p>
+          <p>{this.state.messageText}</p>
+
+          <form onSubmit={this.handleSubmit}>
+            <label htmlFor="name">Imię:</label>
+            <input
+              type="text"
+              name="name"
+              id="name"
+              value={this.state.name}
+              onChange={this.handleNameChange}
+            />
+            <br />
+            <label htmlFor="zodiac">Znak zodiaku</label>
+            <input
+              type="text"
+              name="zodiac"
+              id="zodiac"
+              value={this.state.zodiac}
+              onChange={this.handleZodiacChange}
+            />
+            <br />
+            <input type="submit" value="wyślij" />
+          </form>
         </header>
       </div>
     );

@@ -3,7 +3,9 @@ import styles from "./Header.module.scss";
 
 class Header extends React.Component {
   render() {
-    return <div className={styles.HeaderWrapper}>Missing clock :(</div>;
+    return (
+      <div className={styles.HeaderWrapper}>{this.props.currentTimerValue}</div>
+    );
   }
 }
 
