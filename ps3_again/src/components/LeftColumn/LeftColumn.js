@@ -69,6 +69,7 @@ class LeftColumn extends React.Component {
             Increase by 1
           </button>
           <p>Counter: {this.state.counter}</p>
+
           <p>{this.state.messageText}</p>
 
           <form onSubmit={this.handleSubmit}>
