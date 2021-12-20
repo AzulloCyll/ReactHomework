@@ -1,11 +1,10 @@
 // import styles from './RightColumn.module.scss';
 import { useState } from "react/cjs/react.development";
 import commonColumnsStyles from "../../common/styles/Columns.module.scss";
+import Form from "../Components/Form/Form";
 
 function RightColumn(props) {
   const [inputValue, setInputValue] = useState(0);
-  const [name, setName] = useState("");
-  const [zodiac, setZodiac] = useState("");
   const [messageText, setMessageText] = useState("");
 
   const handleDoubleClick = () => {
@@ -20,17 +19,8 @@ function RightColumn(props) {
     props.changeTimer(inputValue);
   };
 
-  const handleNameChange = (e) => {
-    setName(e.target.value);
-  };
-
-  const handleZodiacChange = (e) => {
-    setZodiac(e.target.value);
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setMessageText(`Cześć ${name}, twój znak zodiaku to ${zodiac}`);
+  const handleMessageSet = (message) => {
+    setMessageText(message);
   };
 
   return (
@@ -45,30 +35,8 @@ function RightColumn(props) {
           type="number"
         />
         <button onClick={handleNewTimer}>Set value from input to timer</button>
-
         <p>{messageText}</p>
-
-        <form onSubmit={handleSubmit}>
-          <label htmlFor="name">Imię:</label>
-          <input
-            type="text"
-            name="name"
-            id="name"
-            value={name}
-            onChange={handleNameChange}
-          />
-          <br />
-          <label htmlFor="zodiac">Znak zodiaku</label>
-          <input
-            type="text"
-            name="zodiac"
-            id="zodiac"
-            value={zodiac}
-            onChange={handleZodiacChange}
-          />
-          <br />
-          <input type="submit" value="wyślij" />
-        </form>
+        <Form sendMessageToParentComponent={handleMessageSet} />
       </header>
     </div>
   );
