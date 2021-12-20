@@ -4,99 +4,97 @@ import React from "react";
 import commonColumnsStyles from "../../common/styles/Columns.module.scss";
 
 class LeftColumn extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      counter: 0,
-      name: "",
-      zodiac: "",
-      messageText: "",
-    };
-  }
+	constructor(props) {
+		super(props);
+		this.state = {
+			counter: 0,
+			name: "",
+			zodiac: "",
+			messageText: "",
+		};
+	}
 
-  componentDidMount() {
-    console.log("mounted");
-  }
+	componentDidMount() {
+		console.log("mounted");
+	}
 
-  componentWillUnmount() {
-    console.log("unmonted");
-  }
+	componentWillUnmount() {
+		console.log("unmonted");
+	}
 
-  componentDidUpdate() {
-    console.log("updated");
-  }
+	componentDidUpdate() {
+		console.log("updated");
+	}
 
-  handleIncreaseCounter = () => {
-    this.setState({
-      counter: this.state.counter + 1,
-    });
-  };
+	handleIncreaseCounter = () => {
+		this.setState({
+			counter: this.state.counter + 1,
+		});
+	};
 
-  handleDecreaseCounter = (e) => {
-    e.preventDefault();
-    this.setState({
-      counter: this.state.counter - 1,
-    });
-  };
+	handleDecreaseCounter = (e) => {
+		e.preventDefault();
+		this.setState({
+			counter: this.state.counter - 1,
+		});
+	};
 
-  handleNameChange = (e) => {
-    this.setState({
-      name: e.target.value,
-    });
-  };
+	handleChange = (e) => {
+		if (e.target.name === "name") {
+			this.setState({ name: e.target.value });
+		}
+		if (e.target.name === "zodiac") {
+			this.setState({ zodiac: e.target.value });
+		}
+	};
 
-  handleZodiacChange = (e) => {
-    this.setState({
-      zodiac: e.target.value,
-    });
-  };
+	handleSubmit = (e) => {
+		const { name, zodiac } = this.state;
+		e.preventDefault();
+		this.setState({
+			messageText: `Cześć ${name}, twój znak zodiaku to ${zodiac}`,
+		});
+	};
 
-  handleSubmit = (e) => {
-    e.preventDefault();
-    this.setState({
-      messageText: `Cześć ${this.state.name}, twój znak zodiaku to ${this.state.zodiac}`,
-    });
-  };
+	render() {
+		return (
+			<div className={commonColumnsStyles.App}>
+				<header className={commonColumnsStyles.AppHeader}>
+					<button
+						onClick={this.handleIncreaseCounter}
+						onContextMenu={this.handleDecreaseCounter}
+					>
+						Left click + 1 / Right click -1
+					</button>
+					<p>Counter: {this.state.counter}</p>
 
-  render() {
-    return (
-      <div className={commonColumnsStyles.App}>
-        <header className={commonColumnsStyles.AppHeader}>
-          <button
-            onClick={this.handleIncreaseCounter}
-            onContextMenu={this.handleDecreaseCounter}
-          >
-            Increase by 1
-          </button>
-          <p>Counter: {this.state.counter}</p>
+					<p>{this.state.messageText}</p>
 
-          <p>{this.state.messageText}</p>
-
-          <form onSubmit={this.handleSubmit}>
-            <label htmlFor="name">Imię:</label>
-            <input
-              type="text"
-              name="name"
-              id="name"
-              value={this.state.name}
-              onChange={this.handleNameChange}
-            />
-            <br />
-            <label htmlFor="zodiac">Znak zodiaku</label>
-            <input
-              type="text"
-              name="zodiac"
-              id="zodiac"
-              value={this.state.zodiac}
-              onChange={this.handleZodiacChange}
-            />
-            <br />
-            <input type="submit" value="wyślij" />
-          </form>
-        </header>
-      </div>
-    );
-  }
+					<form onSubmit={this.handleSubmit}>
+						<label htmlFor="name">Imię:</label>
+						<input
+							type="text"
+							name="name"
+							id="name"
+							value={this.state.name}
+							onChange={this.handleChange}
+						/>
+						<br />
+						<label htmlFor="zodiac">Znak zodiaku</label>
+						<input
+							type="text"
+							name="zodiac"
+							id="zodiac"
+							value={this.state.zodiac}
+							onChange={this.handleChange}
+						/>
+						<br />
+						<input type="submit" value="wyślij" />
+					</form>
+				</header>
+			</div>
+		);
+	}
 }
 
 export default LeftColumn;
