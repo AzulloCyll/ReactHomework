@@ -2,6 +2,10 @@ import React, { useState } from "react";
 // import { Link } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
 
+import Box from "@mui/material/Box";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
+
 function LoginPage() {
   let navigate = useNavigate();
 
@@ -18,17 +22,41 @@ function LoginPage() {
   };
   return (
     <div>
-      <form onSubmit={signInUser}>
-        <label>First name</label>
-        <input
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        minHeight="100vh"
+        component="form"
+        sx={{
+          "& > :not(style)": {
+            mx: "auto",
+            m: 1,
+            width: "25ch",
+            marginTop: "20px",
+          },
+        }}
+        noValidate
+        autoComplete="off"
+      >
+        <TextField
+          id="firstname"
+          label="First name"
+          variant="outlined"
           onChange={(event) => setUserFirstName(event.target.value)}
-        ></input>
-        <label>Lirst name</label>
-        <input
+        />
+        <TextField
+          id="lastname"
+          label="Last name"
+          variant="outlined"
           onChange={(event) => setUserLastName(event.target.value)}
-        ></input>
-        <button type="submit"> Sign in</button>
-      </form>
+        />
+        <Box sx={{ mx: "auto" }}>
+          <Button variant="contained" onClick={signInUser}>
+            Sign in
+          </Button>
+        </Box>
+      </Box>
     </div>
   );
 }

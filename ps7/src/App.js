@@ -1,4 +1,3 @@
-import AirportsList from "./components/AirportsList/AirportsList";
 import Header from "./components/Header/Header";
 import styles from "./App.module.scss";
 import { Navigate, Outlet } from "react-router-dom";
@@ -15,12 +14,15 @@ function App() {
       id: uniqueId(),
     }));
     let airportsJSON = JSON.stringify(airportsWithID);
-    window.localStorage.setItem("airports", airportsJSON);
+    if (!window.localStorage.getItem("airports")) {
+      window.localStorage.setItem("airports", airportsJSON);
+    }
   }, []);
 
   if (!userExist) {
     return <Navigate to="/" />;
   }
+
   return (
     <div className={styles.appWrapper}>
       <Header />
