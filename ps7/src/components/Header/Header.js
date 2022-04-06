@@ -10,7 +10,7 @@ function Header() {
   return (
     <div className={styles.Wrapper}>
       <p>
-        Logged user:{" "}
+        Logged user:
         {`${currentUser.userfirstName} ${currentUser.userLastName}`}
       </p>
       <Link to="/" style={{ textDecoration: "none" }}>

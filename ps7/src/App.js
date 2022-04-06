@@ -7,6 +7,7 @@ import { uniqueId } from "lodash";
 
 function App() {
   const userExist = localStorage.getItem("user");
+  // window.localStorage.setItem("airports", JSON.stringify(airports));
 
   useEffect(() => {
     let airportsWithID = airports.map((airport) => ({
@@ -14,9 +15,8 @@ function App() {
       id: uniqueId(),
     }));
     let airportsJSON = JSON.stringify(airportsWithID);
-    if (!window.localStorage.getItem("airports")) {
-      window.localStorage.setItem("airports", airportsJSON);
-    }
+
+    window.localStorage.setItem("airports", airportsJSON);
   }, []);
 
   if (!userExist) {
