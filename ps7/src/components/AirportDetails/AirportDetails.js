@@ -42,10 +42,8 @@ export default function AirporttDeTails() {
     delById(id);
 
     navigate("/airports/list", {
-      id: id,
-      name: airports[id - 1].name,
+      state: { name: airportDetails.name, country: airportDetails.country },
     });
-    console.log("backed", id);
   };
 
   const handleNo = () => {
@@ -97,7 +95,7 @@ export default function AirporttDeTails() {
             </DialogTitle>
             <DialogContent>
               <DialogContentText id="alert-dialog-description">
-                Do you realy want to delete {airports[id - 1].name} airport?
+                Do you realy want to delete {airportDetails.name} airport?
               </DialogContentText>
               <DialogActions>
                 <Button onClick={handleYes}>Yes</Button>
