@@ -1,7 +1,7 @@
 import React from "react";
 // import CircularProgress from "@mui/material/CircularProgress";
 import commonColumnsStyles from "../../common/styles/Columns.module.scss";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Stack, Paper } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
@@ -14,17 +14,21 @@ function AirportsList({
   airportsFromRedux,
   airportsLoadingStatus,
   setAirportsLoadingStatus,
+  setSelectedAirport,
 }) {
   const handleClose = () => {
-    setAirportsLoadingStatus("fail");
+    setAirportsLoadingStatus("");
   };
 
-  const getAirportDetails = async (id) => {
+  let navigate = useNavigate();
+
+  const navigateToDetails = async (airport) => {
     try {
-      let AirportDetailsFromApi = await axios.get(
-        `http://localhost:9000/airports/${id}`
+      const response = await axios.get(
+        `http://localhost:9000/airports/${airport.id}`
       );
-      console.log(AirportDetailsFromApi);
+      setSelectedAirport(response.data);
+      navigate("/airport/details/${airport.id}");
     } catch (error) {
       console.log(error);
     }
@@ -45,7 +49,9 @@ function AirportsList({
               <Stack spacing={2}>
                 {airportsFromRedux.map((airport) => (
                   <Link key={airport.id} to={`/airport/details/${airport.id}`}>
-                    <Paper>{`${airport.name} - ${airport.id}`}</Paper>
+                    <Paper
+                      onClick={() => navigateToDetails(airport)}
+                    >{`${airport.name} - ${airport.id}`}</Paper>
                   </Link>
                 ))}
               </Stack>
@@ -63,6 +69,16 @@ function AirportsList({
   );
 }
 
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setAirportsLoadingStatus: (value) => {
+      dispatch({ type: "SET_AIRPORT_LOADING_STATUS", value: value });
+    },
+    setSelectedAirport: (value) =>
+      dispatch({ type: "SET_SELECTED_AIRPORT", value: value }),
+  };
+};
+
 const mapStateToProps = (state) => {
   // state - dane pochodzące z redux sotre'a
   return {
@@ -70,14 +86,6 @@ const mapStateToProps = (state) => {
     airportsLoadingStatus: state.airport.airportsLoadingStatus,
     // airportsFromRedux - tak będzie się nazywał props wewnątrz komponentu
     // state.airport.airports - źródło danych które mają być dostępne jako "props.airportsFromRedux"
-  };
-};
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    setAirportsLoadingStatus: (value) => {
-      dispatch({ type: "SET_AIRPORT_LOADING_STATUS", value: value });
-    },
   };
 };
 

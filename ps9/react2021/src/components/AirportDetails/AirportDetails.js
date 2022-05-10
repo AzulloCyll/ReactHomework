@@ -9,6 +9,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import { Button } from "@mui/material";
 import { connect, useSelector, useDispatch } from "react-redux";
 import { getAirportByIdSelector } from "../../redux/airports/selectors";
+import { getSelectedAirport } from "../../redux/airports/selectors";
 import axios from "axios";
 
 function AirportDetails() {
@@ -21,19 +22,7 @@ function AirportDetails() {
     navigate(-1);
   };
 
-  const airportDetails = useSelector((store) =>
-    getAirportByIdSelector(store, id)
-  );
-
-  const getAirportDetails = async (id) => {
-    try {
-      let AirportDetailsFromApi = await axios.get(
-        "http://localhost:9000/airports/:id"
-      );
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  const airportDetails = useSelector((store) => getSelectedAirport(store));
 
   const [dialogIsOpen, setDialogIsOpen] = useState(false);
 

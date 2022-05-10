@@ -13,6 +13,8 @@ export const airportReducer = (state = initialAirportsState, action) => {
       };
     case "SET_AIRPORT_LOADING_STATUS":
       return { ...state, airportsLoadingStatus: action.value };
+    case "SET_SELECTED_AIRPORT":
+      return { ...state, selectedAirport: action.value };
     default:
       return state;
   }

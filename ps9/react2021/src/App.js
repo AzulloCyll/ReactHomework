@@ -22,7 +22,7 @@ function App(props) {
 const mapDispatchToProps = (dispatch) => {
   return {
     setInitialAirportsList: (value) =>
-      dispatch({ type: "SET_INITIAL_AIRPORTS_LIST", value: null }),
+      dispatch({ type: "SET_INITIAL_AIRPORTS_LIST", value: value }),
   };
 };
 

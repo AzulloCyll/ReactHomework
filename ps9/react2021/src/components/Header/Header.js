@@ -7,19 +7,16 @@ import airports from "../../common/consts/airports";
 import axios from "axios";
 
 function Header(props) {
-  console.log(props);
   const currentUser = JSON.parse(window.localStorage.getItem("user"));
 
   const getAirports = async () => {
     try {
       // tutaj ustawić status loading
       props.setAirportsLoadingStatus("loading");
-      let airportsFromApi = await axios.get(
-        "http://localhost:9000/airports/delayed"
-      );
+      let airportsFromApi = await axios.get("http://localhost:9000/airports");
       props.setAirportsLoadingStatus("success");
       // tutaj ustawic status succes
-      console.log(airportsFromApi.data);
+
       props.setInitialAirportsList(airportsFromApi.data);
     } catch (error) {
       // tutaj ustawic status error
