@@ -9,40 +9,31 @@ import DialogTitle from "@mui/material/DialogTitle";
 import { Button } from "@mui/material";
 import { connect, useSelector, useDispatch } from "react-redux";
 import { getAirportByIdSelector } from "../../redux/airports/selectors";
-import { getSelectedAirport } from "../../redux/airports/selectors";
-import axios from "axios";
 
-function AirportDetails() {
+function AirportDetails(props) {
   let navigate = useNavigate();
-  const dispatch = useDispatch();
-  let { id } = useParams();
+  const { id } = useParams();
 
-  const handleRemoveAirportFromList = async (id) => {
-    try {
-      await axios.delete(`http://localhost:9000/airports/${id}`);
-      const airportsList = await axios.get(`http://localhost:9000/airports`);
-      dispatch({
-        type: "SET_INITIAL_AIRPORTS_LIST",
-        value: airportsList.data,
-      });
-      navigate("/airports/list");
-    } catch (e) {
-      console.log(e);
-    }
+  const dispatch = useDispatch();
+
+  const handleRemoveAirportFromList = () => {
+    dispatch({ type: "REMOVE_AIRPORT_BY_ID", value: id });
+    navigate(-1);
   };
 
-  const airportDetails = useSelector((store) => getSelectedAirport(store));
+  const airportDetails = useSelector((store) =>
+    getAirportByIdSelector(store, id)
+  );
 
   const [dialogIsOpen, setDialogIsOpen] = useState(false);
 
-  console.log("dialogIsOpen", dialogIsOpen);
   return (
     <>
       <Dialog open={dialogIsOpen}>
         <DialogTitle>Czy na pewno chcesz usunąć lotnisko</DialogTitle>
         <DialogActions>
           <Button onClick={() => setDialogIsOpen(false)}>Nie</Button>
-          <Button onClick={() => handleRemoveAirportFromList(id)} autoFocus>
+          <Button onClick={() => handleRemoveAirportFromList()} autoFocus>
             Tak
           </Button>
         </DialogActions>
@@ -77,10 +68,11 @@ function AirportDetails() {
 
 // const mapDispatchToProps = (dispatch) => {
 //   return {
-//     removeAirportById: (id) =>
-//       dispatch({ type: "REMOVE_AIRPORT_BY_ID", value: id }),
+//     removeAirportById: (value) =>
+//       dispatch({ type: "REMOVE_AIRPORT_BY_ID", value: value }),
 //   };
 // };
 
+// export default connect(mapStateToProps, mapDispatchToProps)(AirportDetails);
+
 export default AirportDetails;
-// export default connect(mapStateToProps)AirportDetails;

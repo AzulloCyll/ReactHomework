@@ -1,4 +1,4 @@
-import React from "react";
+import { React, useState } from "react";
 // import CircularProgress from "@mui/material/CircularProgress";
 import commonColumnsStyles from "../../common/styles/Columns.module.scss";
 import { Link, useNavigate } from "react-router-dom";
@@ -15,21 +15,22 @@ function AirportsList({
   airportsLoadingStatus,
   setAirportsLoadingStatus,
   setSelectedAirport,
+  airportsListLoadingError,
 }) {
-  const handleClose = () => {
-    setAirportsLoadingStatus("");
-  };
-
+  const [loadingAirportId, setLoadingAirportId] = useState(null);
   let navigate = useNavigate();
 
   const navigateToDetails = async (airport) => {
     try {
+      setLoadingAirportId(airport.id);
       const response = await axios.get(
-        `http://localhost:9000/airports/${airport.id}`
+        `http://localhost:9000/airports/${airport.id}/delayed`
       );
       setSelectedAirport(response.data);
-      navigate("/airport/details/${airport.id}");
+      setLoadingAirportId(null);
+      navigate(`/airport/details/${airport.id}`);
     } catch (error) {
+      setLoadingAirportId(null);
       console.log(error);
     }
   };
@@ -37,33 +38,28 @@ function AirportsList({
   return (
     <div className={commonColumnsStyles.App}>
       <header className={commonColumnsStyles.AppHeader}>
-        {airportsLoadingStatus === "loading" && (
-          <Box sx={{ display: "flex" }}>
+        <p>Lista lotnisk</p>
+        <Stack spacing={2}>
+          {airportsLoadingStatus === "loading" ? (
             <CircularProgress />
-          </Box>
-        )}
-        {airportsLoadingStatus === "success" && (
-          <div>
-            <>
-              <p>Lista lotnisk</p>
-              <Stack spacing={2}>
-                {airportsFromRedux.map((airport) => (
-                  <Link key={airport.id} to={`/airport/details/${airport.id}`}>
-                    <Paper
-                      onClick={() => navigateToDetails(airport)}
-                    >{`${airport.name} - ${airport.id}`}</Paper>
-                  </Link>
-                ))}
-              </Stack>
-            </>
-          </div>
-        )}
+          ) : (
+            airportsFromRedux?.map((airport, index) => (
+              <Box key={airport.id} onClick={() => navigateToDetails(airport)}>
+                {loadingAirportId && loadingAirportId === airport.id ? (
+                  <CircularProgress />
+                ) : (
+                  <Paper>{`${airport.name} - ${airport.id}`}</Paper>
+                )}
+              </Box>
+            ))
+          )}
+        </Stack>
       </header>
       <Snackbar
         open={airportsLoadingStatus === "error"}
-        autoHideDuration={1000}
-        onClose={handleClose}
-        message="Note archived"
+        autoHideDuration={4000}
+        onClose={() => setAirportsLoadingStatus("initial")}
+        message={airportsListLoadingError}
       />
     </div>
   );
@@ -84,6 +80,7 @@ const mapStateToProps = (state) => {
   return {
     airportsFromRedux: state.airport.airports,
     airportsLoadingStatus: state.airport.airportsLoadingStatus,
+    airportsListLoadingError: state.airport.loadingAirportsError,
     // airportsFromRedux - tak będzie się nazywał props wewnątrz komponentu
     // state.airport.airports - źródło danych które mają być dostępne jako "props.airportsFromRedux"
   };
